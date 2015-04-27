@@ -1,0 +1,271 @@
+@font-face {
+  /*font-family: 'h5icon';
+  src: url('http://h5.lietou-static.com/m/font/h5icon.otf');*/
+  /*给自定义字体命名*/
+}
+.icon {
+  font-family: h5icon;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.8.0r4
+*/
+
+html {
+  color: #333;
+  direction: ltr;
+}
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+button,
+textarea,
+p,
+blockquote,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+fieldset,
+img {
+  border: 0;
+}
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var,
+optgroup {
+  font-style: inherit;
+  font-weight: inherit;
+}
+del,
+ins {
+  text-decoration: none;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+caption,
+th {
+  text-align: left;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+q:before,
+q:after {
+  content: '';
+}
+abbr,
+acronym {
+  border: 0;
+  font-variant: normal;
+}
+sup {
+  vertical-align: baseline;
+}
+sub {
+  vertical-align: baseline;
+}
+legend {
+  color: #000;
+}
+input,
+button,
+textarea,
+select,
+optgroup,
+option {
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+}
+input,
+button,
+textarea,
+select {
+  *font-size: 100%;
+}
+article,
+aside,
+dialog,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+time,
+mark,
+audio,
+video,
+details,
+summary {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+article,
+aside,
+dialog,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section,
+figcaption,
+details,
+summary {
+  display: block;
+}
+nav ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+details:not([open]) > *:not(summary) {
+  display: none;
+}
+.clearfix {
+  zoom: 1;
+}
+.clearfix:before {
+  content: '';
+  display: block;
+}
+.clearfix:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+html {
+  font-size: 62.5%;
+  height: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Microsoft Yahei' Helvetica;
+  font-size: 1.2rem;
+  height: 100%;
+}
+.container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.container .pagelist {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  -webkit-backface-visibility: hidden;
+}
+.container .pagelist.horizontal section {
+  min-height: 100%;
+  float: left;
+}
+.container .pagelist section {
+  display: box;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  /*-webkit-backface-visibility:hidden;
+  -webkit-perspective:1000;*/
+}
+.container .sec li a {
+  line-height: 3em;
+  display: block;
+}
+.page1 {
+  background: yellow;
+}
+.page2 {
+  background: blue;
+}
+.page3 {
+  background: red;
+}
+.page4 {
+  background: gray;
+}
+.page5 {
+  background: #fff;
+}
+.page6 {
+  background: red;
+}
+.scrollbox {
+  height: auto!important
+}
+.page5 p {
+  line-height: 5em;
+  background: #fff;
+  padding: 0 0.5em;
+  width: 100%;
+}
+.page5 p:nth-child(2n+1) {
+  background: #f1f1f1;
+}
+.prevpage,
+.nextpage {
+  display: block;
+  color: #000;
+  line-height: 3em
+}
