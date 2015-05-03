@@ -201,67 +201,41 @@ body {
   padding: 0;
   font-family: 'Microsoft Yahei' Helvetica;
   font-size: 1.2rem;
-  height: 100%;
+  color: #fff;
 }
-.container {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-}
-.container .pagelist {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  -webkit-backface-visibility: hidden;
-}
-.container .pagelist.horizontal section {
-  min-height: 100%;
-  float: left;
-}
-.container .pagelist section {
-  display: box;
-  position: relative;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  /*-webkit-backface-visibility:hidden;
-  -webkit-perspective:1000;*/
-}
-.container .sec li a {
-  line-height: 3em;
-  display: block;
+.title {
+  font-size: 1.8rem;
+  line-height: 2em;
+  text-align: center;
 }
 .page1 {
-  background: yellow;
+  background-color: #00c0dc;
 }
 .page2 {
-  background: blue;
+  background-color: #00cecf;
 }
 .page3 {
-  background: red;
+  background-color: #3dd7a0;
 }
 .page4 {
-  background: gray;
+  background-color: #3cc748;
 }
 .page5 {
-  background: #fff;
+  background-color: #3bb812;
 }
 .page6 {
-  background: red;
+  background-color: #94bf00;
 }
-.scrollbox {
-  height: auto!important
+.page7 {
+  background-color: #c2d500;
+}
+.page8 {
+  background-color: #c1f288;
 }
 .page5 p {
   line-height: 5em;
-  background: #fff;
   padding: 0 0.5em;
   width: 100%;
-}
-.page5 p:nth-child(2n+1) {
-  background: #f1f1f1;
 }
 .prevpage,
 .nextpage {

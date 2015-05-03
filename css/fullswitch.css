@@ -1,0 +1,33 @@
+body {
+  height: 100%;
+}
+.fullswitch-container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.fullswitch-container .fullswitch-pagelist {
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  -webkit-backface-visibility: hidden;
+}
+.fullswitch-container .fullswitch-pagelist.horizontal .fullswitch-page {
+  min-height: 100%;
+  float: left;
+}
+.fullswitch-container .fullswitch-pagelist .fullswitch-page {
+  display: box;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  -webkit-backface-visibility: hidden;
+  /*-webkit-perspective:1000;*/
+}
+.fullswitch-longpage {
+  margin: 0 auto;
+  height: auto!important
+}

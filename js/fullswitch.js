@@ -24,9 +24,10 @@
       swipeMaxTime: 500, //swipe事件的临界时间,ms
       swipeBaseTime: 500, //模拟scroll事件时计算的基础时间
       scrollSwipe: true, //是否支持scrollSwipe事件
-      scrollSwipeGap: 50,
       loop: false, //是否可以从最后一页到第一页
-      easing: 'cubic-bezier(0,.84,1,.22)',
+      easing: 'cubic-bezier(0,.84,1,.22)', //easing 贝瑟尔曲线
+      mouseMoveAvailable: true, //是否支持mouseMove事件
+      orientStretch: true,
       hash: false //启动hash功能
     };
 
@@ -92,34 +93,34 @@
   };
 
   Plugin.prototype._initPx = function () {
-    this.unitHeight = this.axis === 'y' ? this.pages.eq(0).height() : this.pages.eq(0).width();
+    var that = this
+    this.unitHeight = this.axis === 'y' ? window.innerHeight : window.innerWidth;
+    //this.unitHeight = this.axis === 'y' ? parseInt(document.documentElement.clientHeight) : parseInt(document.documentElement.clientWidth);
+    //this.unitHeight = this.axis === 'y' ? this.pages.eq(0).height() : this.pages.eq(0).width(); 
     this.scrollHeight = !this.options.scrollPage ? 0 : (this.axis === 'y' ? this.scrollPage.height() : this.scrollPage.width());
     this.height = this.unitHeight * (this.length - 1) + this.scrollHeight;
-    if (this.axis === 'y') {
+    if (window.innerHeight > window.innerWidth) {
       this.pages.css({
+        width: window.innerWidth,
         height: this.unitHeight
-      });
-      if (this.options.scrollPage) {
-        this.scrollPage.css({
-          height: this.scrollHeight
-        });
-      }
-      this.ul.css({
-        height: this.height
       });
     } else {
       this.pages.css({
-        width: this.unitHeight
-      });
-      if (this.options.scrollPage) {
-        this.scrollPage.css({
-          width: this.scrollHeight
-        });
-      }
-      this.ul.css({
-        width: this.height
+        width: that.options.orientStretch ? window.innerWidth : window.innerHeight / window.innerWidth * window.innerHeight,
+        height: this.unitHeight
       });
     }
+    $('body').css({
+      height: this.unitHeight
+    });
+    if (this.options.scrollPage) {
+      this.scrollPage.css({
+        height: this.scrollHeight
+      });
+    }
+    this.ul.css({
+      height: this.height
+    });
     this._initPageArr();
   };
 
@@ -152,34 +153,45 @@
     this._setTransform(0);
     //绑定tuchstart事件
     this.handler = {
-      start: function (e) {
-        that._touchstart.call(that, e);
+      tstart: function (e) {
+        that._eventstart.call(that, e, true);
       },
-      move: function (e) {
-        that._touchmove.call(that, e);
+      tmove: function (e) {
+        that._eventmove.call(that, e, true);
       },
-      end: function (e) {
-        that._touchend.call(that, e);
+      tend: function (e) {
+        that._eventend.call(that, e, true);
+      },
+      mstart: function (e) {
+        that._eventstart.call(that, e, false);
+      },
+      mmove: function (e) {
+        that._eventmove.call(that, e, false);
+      },
+      mend: function (e) {
+        that._eventend.call(that, e, false);
       }
     }
-    document.addEventListener('touchstart', that.handler.start, false);
-    //绑定tuchmove事件
-    document.addEventListener('touchmove', that.handler.move, false);
-    //绑定tuchend事件
-    document.addEventListener('touchend', that.handler.end, false);
+    document.addEventListener('touchstart', that.handler.tstart, false);
+    document.addEventListener('touchmove', that.handler.tmove, false);
+    document.addEventListener('touchend', that.handler.tend, false);
+    if (this.options.mouseMoveAvailable) { //鼠标事件
+      document.addEventListener('mousedown', that.handler.mstart, false);
+      document.addEventListener('mousemove', that.handler.mmove, false);
+      document.addEventListener('mouseup', that.handler.mend, false);
+    }
     //绑定webkitTransitionEnd事件
     this.ul[0].addEventListener(that.transendEvent, function (e) {
       //this.started = false; 
       that._transitionend.call(that, e);
-      console.log('transend111')
       that.ul.trigger('transend', that.page);
     }, false);
     window.addEventListener("orientationchange", function (e) {
-      var trans = that._getTrans()[this.axis],
-        step = trans - that.pageArr[that.page][0];
-      that._initPx();
-      that._initPageArr();
-      that.goStep(step + that.pageArr[that.page][0]);
+      setTimeout(function () {
+        that._initPx();
+        that.removeTrans();
+        that.goPage(that.page);
+      }, 200);
     }, false);
     if (this.options.hash) {
       var hash = parseInt(location.hash.substring(1));
@@ -189,9 +201,9 @@
     }
   };
 
-  Plugin.prototype._touchstart = function (e) {
+  Plugin.prototype._eventstart = function (e, iftouch) {
     var that = this,
-      ev = e.changedTouches[0],
+      ev = iftouch ? e.changedTouches[0] : e,
       arrTrans = [];
     this.started = false;
     this.removeTrans();
@@ -208,11 +220,11 @@
     this.startTime = e.timeStamp;
   };
 
-  Plugin.prototype._touchmove = function (e) {
+  Plugin.prototype._eventmove = function (e, iftouch) {
     if (!this.started) return;
     this.moved = true;
     e.preventDefault();
-    var ev = e.changedTouches[0];
+    var ev = iftouch ? e.changedTouches[0] : e;
     this.movePos = {
       x: ev.pageX,
       y: ev.pageY
@@ -247,8 +259,8 @@
     }
   };
 
-  Plugin.prototype._touchend = function (e) {
-    var ev = e.changedTouches[0],
+  Plugin.prototype._eventend = function (e, iftouch) {
+    var ev = iftouch ? e.changedTouches[0] : e,
       margin0 = 0,
       margin1 = 0,
       step, endstep;
@@ -260,12 +272,13 @@
       x: ev.pageX,
       y: ev.pageY
     };
-    if (!this.started || this.endPos[this.axis] == this.startPos[this.axis]) { //没有移动
+    if (!this.started) return;
+    this.started = false;
+    if (this.endPos[this.axis] == this.startPos[this.axis]) { //没有移动
       return;
     }
     this.trans = this._getTrans();
     this.endTime = e.timeStamp;
-
     if (this.endPos[this.axis] < this.startPos[this.axis]) { //向下滚屏，一般情况出下一页
       if (!this.options.scrollPage) { //只有一般页
         if (Math.abs(this.endPos[this.axis] - this.startPos[this.axis]) >= this.options.threshold) {
@@ -301,7 +314,6 @@
           } else {
             endstep = Math.max(step - distance * this.scrollHeight / this.unitHeight * (this.options.swipeBaseTime - timediff) / this.options.swipeMaxTime, margin1);
             this.ul[0].style[this.transitionName] = 'all ' + (this.options.swipeBaseTime) / 1000 + 's ease-out';
-            console.log(this.ul[0].style[this.transitionName])
           }
           step = endstep;
           this.goStep(step);
@@ -334,12 +346,8 @@
           if (!this.options.scrollSwipe || timediff >= this.options.swipeMaxTime) { //大于0.5秒，只挪动相应距离，无滑动
             endstep = Math.min(step, margin0);
           } else {
-            console.log(this.options.swipeBaseTime)
-              //alert(0)
             endstep = Math.min(step + distance * this.scrollHeight / this.unitHeight * (this.options.swipeBaseTime - timediff) / this.options.swipeMaxTime, margin0);
-            console.log(this.transitionName)
             this.ul[0].style[this.transitionName] = 'all ' + (this.options.swipeBaseTime) / 1000 + 's ease-out';
-            console.log(this.ul[0].style[this.transitionName])
           }
           step = endstep;
           this.goStep(step);
@@ -374,7 +382,6 @@
   Plugin.prototype._transitionend = function (e) {
     var that = this;
     this.animating = false;
-    //history.pushState({},"","#"+this.page);
     this.options.transEndCb && this.options.transEndCb.call(that, that.page);
   }
   Plugin.prototype.getAxis = function () {
@@ -436,25 +443,27 @@
 
   Plugin.prototype.offTouch = function () {
     var that = this;
-    document.removeEventListener('touchstart', that.handler.start, false);
-    document.removeEventListener('touchmove', that.handler.move, false);
-    document.removeEventListener('touchend', that.handler.end, false);
+    document.removeEventListener('touchstart', that.handler.tstart, false);
+    document.removeEventListener('touchmove', that.handler.tmove, false);
+    document.removeEventListener('touchend', that.handler.tend, false);
+    if (this.options.mouseMoveAvailable) { //鼠标事件
+      document.removeEventListener('mousedown', that.handler.mstart, false);
+      document.removeEventListener('mousemove', that.handler.mmove, false);
+      document.removeEventListener('mouseup', that.handler.mend, false);
+    }
   }
 
   Plugin.prototype.onTouch = function () {
     this.offTouch();
     var that = this;
-    $(document).on('touchstart', function (e) {
-      that._touchstart.call(that, e)
-    });
-    //绑定tuchmove事件
-    $(document).on('touchmove', function (e) {
-      that._touchmove.call(that, e)
-    });
-    //绑定tuchend事件
-    $(document).on('touchend', function (e) {
-      that._touchend.call(that, e)
-    });
+    document.addEventListener('touchstart', that.handler.tstart, false);
+    document.addEventListener('touchmove', that.handler.tmove, false);
+    document.addEventListener('touchend', that.handler.tend, false);
+    if (this.options.mouseMoveAvailable) { //鼠标事件
+      document.addEventListener('mousedown', that.handler.mstart, false);
+      document.addEventListener('mousemove', that.handler.mmove, false);
+      document.addEventListener('mouseup', that.handler.mend, false);
+    }
   }
 
   Plugin.prototype.goScrollBot = function () {
@@ -485,7 +494,6 @@
 
   Plugin.prototype.removeTrans = function () {
     this.ul[0].style[this.transitionName] = 'all 0 linear';
-    console.log(this.ul[0].style[this.transitionName])
   };
 
   $.fn[pluginName] = function (options) {
