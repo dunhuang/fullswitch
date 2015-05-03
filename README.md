@@ -45,19 +45,19 @@
   * onTouch() 启动touch事件监听
 # EVENT 事件
   * 绑定gopage事件，当从from页开始换到to页时触发（变页动画开始时触发）<br/>
-  ```javascript
+  ```
   list.on("gopage", function (e, to, from) {
     ...
   });
   ```
   * 绑定transend事件，当变到page页时触发（与上面的区别是此事件在变页动画结束时触发）<br/>
-  ```javascript
+  ```
   list.on("transend", function(e, page){
     ...
   });
   ```
   * 绑定orientationchange事件，在page页时发生orientchange事件时触发<br/>
-  ```javascript
+  ```
   list.on("orientchange", function(e, page){
     ...
   }); 
