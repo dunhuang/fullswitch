@@ -4,7 +4,7 @@
 三层结构，参考demo
 # OPTIONS 配置
 ```javascript
-  var list = $('.fullswitch-container .fullswitch-pagelist'); 使用插件时结构层次须与本例一致，但不一定用ul或li标签，
+  var list = $('.fullswitch-container .fullswitch-pagelist'); //使用插件时结构层次须与本例一致，但不一定用ul或li标签，
   list.fullSwitch({
     pages: 'fullswitch-page', 
     scrollPage: '.fullswitch-longpage', //超长页（长度超出屏幕的页），只能一个
