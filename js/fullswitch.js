@@ -191,6 +191,7 @@
         that._initPx();
         that.removeTrans();
         that.goPage(that.page);
+        that.ul.trigger('orientchange', that.page);
       }, 200);
     }, false);
     if (this.options.hash) {
