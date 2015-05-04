@@ -43,6 +43,7 @@
   * goPresent() 回到本页
   * offTouch() 关闭touch事件监听
   * onTouch() 启动touch事件监听
+  
 # EVENT 事件
   * 绑定gopage事件，当从from页开始换到to页时触发（变页动画开始时触发）<br/>
   ```
